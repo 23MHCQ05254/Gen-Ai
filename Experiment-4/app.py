@@ -17,108 +17,224 @@ st.set_page_config(
     layout="wide",
 )
 
-# -------------------- CSS --------------------
+# -------------------- UI THEME --------------------
 st.markdown(
     """
     <style>
     .stApp {
-        background: linear-gradient(
-            135deg, #f4f0ff 0%, #edf6ff 55%, #f8f5ff 100%
-        );
-        color: #172033;
+        background: #f3f4ef;
+        color: #17251e;
     }
 
     .block-container {
-        padding-top: 1.5rem;
-        padding-bottom: 2rem;
-        max-width: 1250px;
+        max-width: 1180px;
+        padding: 2rem 1.5rem 4rem;
     }
 
     .hero {
-        background: linear-gradient(120deg, #e5ddff, #dceeff);
-        padding: 26px;
-        border-radius: 18px;
-        border: 1px solid #d4dafa;
+        position: relative;
+        overflow: hidden;
+        padding: 36px 40px;
         margin-bottom: 22px;
+        border: 1px solid #263d31;
+        border-radius: 24px;
+        background:
+            radial-gradient(ellipse at 92% 10%, #35523c 0, transparent 36%),
+            linear-gradient(120deg, #14221b 0%, #1c3025 100%);
+        box-shadow: 0 18px 44px rgba(20, 34, 27, 0.13);
     }
 
     .hero h1 {
-        color: #30245f;
-        font-size: 30px;
-        margin-bottom: 8px;
+        color: #f7f8f2;
+        font-size: clamp(30px, 4vw, 42px);
+        font-weight: 750;
+        letter-spacing: -1.7px;
+        line-height: 1.08;
+        margin: 12px 0 10px;
     }
 
     .hero p {
-        color: #4a5070;
-        font-size: 16px;
-        margin-bottom: 0;
+        max-width: 620px;
+        color: #c1cdc3;
+        font-size: 15px;
+        line-height: 1.65;
+        margin: 0;
     }
 
-    .panel {
-        background: #ffffff;
-        padding: 18px;
-        border-radius: 14px;
-        border: 1px solid #dce2f1;
-        margin: 10px 0;
-        color: #172033;
+    .hero-kicker, .section-kicker {
+        color: #b6e878;
+        font-size: 11px;
+        font-weight: 750;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
     }
 
-    h2, h3 {
-        color: #382c72 !important;
+    .workflow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 0 30px;
+    }
+
+    .workflow-step {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 14px;
+        border: 1px solid #e0e4dc;
+        border-radius: 999px;
+        background: #fbfcf8;
+        color: #536057;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .workflow-step span {
+        display: grid;
+        width: 21px;
+        height: 21px;
+        place-items: center;
+        border-radius: 50%;
+        background: #e7f2db;
+        color: #315329;
+        font-size: 11px;
+        font-weight: 750;
+    }
+
+    h2 {
+        color: #19291f !important;
+        font-size: 22px !important;
+        font-weight: 720 !important;
+        letter-spacing: -0.5px;
+        margin: 1.25rem 0 0.25rem !important;
+    }
+
+    h3 {
+        color: #24372b !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
     }
 
     label, .stMarkdown, p, li {
-        color: #24304a;
+        color: #46534a;
+    }
+
+    [data-testid="stWidgetLabel"] p {
+        color: #39483e !important;
+        font-size: 13px !important;
+        font-weight: 650 !important;
     }
 
     textarea {
-        background-color: #ffffff !important;
-        color: #172033 !important;
-        -webkit-text-fill-color: #172033 !important;
-        caret-color: #4338ca !important;
-        border: 1px solid #a8b2d1 !important;
-        border-radius: 10px !important;
-        font-size: 15px !important;
-        line-height: 1.7 !important;
+        background-color: #fbfcf8 !important;
+        color: #1d2b22 !important;
+        -webkit-text-fill-color: #1d2b22 !important;
+        caret-color: #537a3b !important;
+        border: 1px solid #d9dfd6 !important;
+        border-radius: 14px !important;
+        font-size: 14px !important;
+        line-height: 1.75 !important;
         opacity: 1 !important;
+        padding: 14px 16px !important;
     }
 
     textarea:disabled {
-        background-color: #ffffff !important;
-        color: #172033 !important;
-        -webkit-text-fill-color: #172033 !important;
+        background-color: #f8f9f5 !important;
+        color: #27372d !important;
+        -webkit-text-fill-color: #27372d !important;
         opacity: 1 !important;
     }
 
     div.stButton > button {
-        background: linear-gradient(100deg, #7662d9, #5595db);
-        color: white;
+        min-height: 48px;
+        background: #c9ef81;
+        color: #1b2b1f;
         border: none;
-        border-radius: 10px;
-        padding: 10px 18px;
-        font-weight: 600;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 750;
+        transition: background 150ms ease, transform 150ms ease;
     }
 
     div.stButton > button:hover {
-        border: 1px solid #7662d9;
-        color: white;
+        background: #b7e76a;
+        border: none;
+        color: #17251e;
+        transform: translateY(-1px);
     }
 
     [data-testid="stMetric"] {
-        background: #ffffff;
-        border: 1px solid #dce2f1;
-        border-radius: 12px;
-        padding: 14px;
+        min-height: 118px;
+        padding: 20px;
+        border: 1px solid #e0e5dc;
+        border-radius: 16px;
+        background: #fbfcf8;
+        box-shadow: 0 5px 16px rgba(26, 42, 31, 0.035);
     }
 
     [data-testid="stMetricLabel"] {
-        color: #4b5270 !important;
+        color: #627066 !important;
+        font-size: 12px !important;
+        font-weight: 650 !important;
     }
 
     [data-testid="stMetricValue"] {
-        color: #30245f !important;
+        color: #203529 !important;
+        font-size: 29px !important;
+        font-weight: 750 !important;
     }
 
+    [data-testid="stDataFrame"] {
+        overflow: hidden;
+        border: 1px solid #e0e5dc;
+        border-radius: 14px;
+        background: #fbfcf8;
+    }
+
+    [data-testid="stAlert"] {
+        border-radius: 12px;
+    }
+
+    hr {
+        border-color: #e1e5de !important;
+        margin: 2rem 0 !important;
+    }
+
+    .panel {
+        padding: 20px 22px;
+        margin: 12px 0 20px;
+        border: 1px solid #e0e5dc;
+        border-left: 4px solid #a9d86c;
+        border-radius: 14px;
+        background: #fbfcf8;
+        color: #34443a;
+        line-height: 1.8;
+        white-space: pre-wrap;
+    }
+
+    .stCaption {
+        color: #758077 !important;
+    }
+
+    @media (max-width: 640px) {
+        .block-container {
+            padding: 1rem 1rem 2rem;
+        }
+
+        .hero {
+            padding: 26px 23px;
+            border-radius: 18px;
+        }
+
+        .workflow {
+            gap: 7px;
+        }
+
+        .workflow-step {
+            padding: 8px 11px;
+            font-size: 11px;
+        }
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -149,27 +265,41 @@ for key in state_keys:
 st.markdown(
     """
     <div class="hero">
-        <h1>🔍 EXPERIMENT 4 · PROMPT DEBUGGING LAB</h1>
+        <div class="hero-kicker">Experiment 04 &nbsp; / &nbsp; Local AI studio</div>
+        <h1>Make every prompt<br>work harder.</h1>
         <p>
-            Detect prompt errors • Explain failure modes •
-            Refine instructions • Compare results
+            Find the friction in your instructions, refine them with AI,
+            and compare both responses side by side.
         </p>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-st.markdown("## 📝 1. Enter the Original Prompt")
+st.markdown(
+    """
+    <div class="workflow">
+        <div class="workflow-step"><span>1</span> Write</div>
+        <div class="workflow-step"><span>2</span> Diagnose</div>
+        <div class="workflow-step"><span>3</span> Refine</div>
+        <div class="workflow-step"><span>4</span> Compare</div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown("## Start with your prompt")
+st.caption("Paste an instruction below. The lab will diagnose it, create a clearer version, and compare the model's responses.")
 prompt = st.text_area(
     "Original prompt",
     key="prompt_input",
     height=160,
-    help="You can edit the default travel prompt before running the experiment.",
+    help="Edit the example or write your own prompt before running the experiment.",
 )
 
 # -------------------- MAIN ACTION --------------------
 if st.button(
-    "🚀 ANALYZE & COMPARE ALL",
+    "ANALYZE PROMPT  ·  REFINE  ·  COMPARE",
     use_container_width=True,
 ):
     if not prompt.strip():
@@ -219,7 +349,8 @@ if st.button(
 # -------------------- DIAGNOSIS --------------------
 if st.session_state.analysis_result:
     st.markdown("---")
-    st.markdown("## 🧩 2. Prompt Failure Diagnosis")
+    st.markdown("## Prompt diagnosis")
+    st.caption("What could make the original instruction harder for a model to follow?")
 
     analysis_text = st.session_state.analysis_result
     marker = "CORRECTED PROMPT:"
@@ -237,7 +368,8 @@ if st.session_state.analysis_result:
 
 # -------------------- CORRECTED PROMPT --------------------
 if st.session_state.corrected_prompt:
-    st.markdown("## 🛠️ 3. AI-Generated Corrected Prompt")
+    st.markdown("## Refined prompt")
+    st.caption("A clearer version that preserves your original intent.")
 
     st.text_area(
         "Refined prompt",
@@ -253,12 +385,13 @@ if (
     and st.session_state.corrected_response
 ):
     st.markdown("---")
-    st.markdown("## 📊 4. Original vs Corrected Response")
+    st.markdown("## Response comparison")
+    st.caption("See how the model responds to the original and refined instructions.")
 
     left, right = st.columns(2)
 
     with left:
-        st.markdown("### 🔴 Original Response")
+        st.markdown("### Original")
         st.text_area(
             "Response before refinement",
             value=st.session_state.original_response,
@@ -268,7 +401,7 @@ if (
         )
 
     with right:
-        st.markdown("### 🟢 Corrected Response")
+        st.markdown("### Refined")
         st.text_area(
             "Response after refinement",
             value=st.session_state.corrected_response,
@@ -279,7 +412,8 @@ if (
 
     # -------------------- DASHBOARD --------------------
     st.markdown("---")
-    st.markdown("## 📈 5. Response Comparison Dashboard")
+    st.markdown("## At a glance")
+    st.caption("A quick read on response length and how much the output changed.")
 
     original = st.session_state.original_response
     corrected = st.session_state.corrected_response
@@ -361,7 +495,7 @@ def reset_app():
 
 
 st.button(
-    "🧹 CLEAR & RESET",
+    "CLEAR WORKSPACE",
     on_click=reset_app,
     use_container_width=True,
 )

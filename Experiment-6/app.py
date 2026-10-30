@@ -6,8 +6,8 @@ import streamlit as st
 from main import evaluate_prompts, OllamaError
 
 st.set_page_config(
-    page_title="Prompt Studio | Experiment 6",
-    page_icon="🎭",
+    page_title="Prompt Lab | Experiment 6",
+    page_icon="✳",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -17,139 +17,227 @@ st.set_page_config(
 st.markdown("""
 <style>
 .stApp {
-    background: #101827;
-    color: #F3F6FC;
+    background: #f5f6f8;
+    color: #18212f;
 }
 
 .block-container {
-    max-width: 1350px;
-    padding-top: 1.5rem;
-    padding-bottom: 2rem;
+    max-width: 1280px;
+    padding-top: 2.25rem;
+    padding-bottom: 4rem;
 }
 
-h1, h2, h3, h4, p, label {
-    color: #F3F6FC !important;
+h1, h2, h3, h4, p, label, [data-testid="stMarkdownContainer"] {
+    color: #18212f;
 }
 
 .hero {
-    background: linear-gradient(120deg, #123A50, #126E75);
-    padding: 25px;
-    border-radius: 16px;
-    margin-bottom: 24px;
-    border: 1px solid #287D85;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    padding: 38px 42px;
+    border-radius: 24px;
+    margin-bottom: 34px;
+    border: 1px solid #e6e9ef;
+    box-shadow: 0 12px 36px rgba(27, 39, 61, 0.045);
+}
+
+.hero:after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    right: -54px;
+    top: -105px;
+    border-radius: 50%;
+    background: #f0edff;
+    box-shadow: 0 0 0 34px #f8f7ff;
+}
+
+.eyebrow {
+    position: relative;
+    z-index: 1;
+    color: #6b55d9;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    margin-bottom: 12px;
 }
 
 .hero h1 {
-    color: white !important;
-    margin: 0 0 8px 0;
+    position: relative;
+    z-index: 1;
+    color: #18212f !important;
+    font-size: clamp(32px, 4vw, 46px);
+    letter-spacing: -1.8px;
+    line-height: 1.08;
+    margin: 0 0 12px 0;
 }
 
 .hero p {
-    color: #E0FFFC !important;
+    position: relative;
+    z-index: 1;
+    color: #697386 !important;
+    max-width: 650px;
+    line-height: 1.65;
     margin-bottom: 0;
 }
 
 .section-label {
-    color: #5EEAD4 !important;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    margin-bottom: 8px;
+    color: #6b55d9 !important;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+    margin: 10px 0 15px;
 }
 
 .stTextArea textarea,
 .stTextInput input {
-    background: #FFFFFF !important;
-    color: #111827 !important;
-    -webkit-text-fill-color: #111827 !important;
+    background: #ffffff !important;
+    color: #18212f !important;
+    -webkit-text-fill-color: #18212f !important;
     opacity: 1 !important;
-    border-radius: 8px !important;
-    border: 1px solid #CBD5E1 !important;
-    font-size: 15px !important;
-    line-height: 1.6 !important;
+    border-radius: 12px !important;
+    border: 1px solid #dfe3eb !important;
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.stTextArea textarea:focus,
+.stTextInput input:focus {
+    border-color: #8876e8 !important;
+    box-shadow: 0 0 0 3px rgba(107, 85, 217, 0.12) !important;
+}
+
+[data-testid="stWidgetLabel"] p {
+    color: #303b4d !important;
+    font-size: 13px;
+    font-weight: 650;
 }
 
 div.stButton > button {
-    background: #16A6A1;
-    color: white;
+    background: #6b55d9;
+    color: #ffffff;
     border: none;
-    border-radius: 9px;
-    min-height: 44px;
-    font-weight: 600;
+    border-radius: 11px;
+    min-height: 48px;
+    font-weight: 700;
+    transition: background 150ms ease, transform 150ms ease;
 }
 
 div.stButton > button:hover {
-    background: #12857F;
-    color: white;
+    background: #5943c6;
+    color: #ffffff;
     border: none;
+    transform: translateY(-1px);
+}
+
+div.stButton > button:focus {
+    box-shadow: 0 0 0 3px rgba(107, 85, 217, 0.2) !important;
 }
 
 .response-title {
-    color: #FFFFFF !important;
-    font-size: 19px;
+    color: #202a3a !important;
+    font-size: 16px;
     font-weight: 700;
     margin-top: 8px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
 .response-subtitle {
-    color: #B7C4D8 !important;
+    color: #7a8495 !important;
     font-size: 13px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .response-card {
-    background: #FFFFFF !important;
-    color: #111827 !important;
-    height: 340px;
+    background: #ffffff !important;
+    color: #283346 !important;
+    min-height: 300px;
+    max-height: 380px;
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
-    padding: 17px;
-    border: 1px solid #CBD5E1;
-    border-radius: 12px;
-    font-size: 15px;
+    padding: 20px;
+    border: 1px solid #e4e7ee;
+    border-radius: 15px;
+    font-size: 14px;
     line-height: 1.7;
     overflow-wrap: anywhere;
     white-space: normal;
     scrollbar-width: thin;
-    scrollbar-color: #94A3B8 #F1F5F9;
+    scrollbar-color: #c3bddf #f5f4fa;
+    box-shadow: 0 5px 16px rgba(27, 39, 61, 0.035);
 }
 
 .response-card,
 .response-card * {
-    color: #111827 !important;
+    color: #283346 !important;
 }
 
 div[data-testid="stVerticalBlockBorderWrapper"] {
-    border: 1px solid #334155;
-    border-radius: 12px;
-    background: #172235;
+    border: 1px solid #e6e9ef;
+    border-radius: 16px;
+    background: #ffffff;
 }
 
 [data-testid="stMetric"] {
-    background: #172235;
-    border: 1px solid #334155;
-    border-radius: 10px;
-    padding: 14px;
+    background: #ffffff;
+    border: 1px solid #e6e9ef;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 5px 16px rgba(27, 39, 61, 0.035);
 }
 
 [data-testid="stMetricLabel"] {
-    color: #CBD5E1 !important;
+    color: #707b8e !important;
 }
 
 [data-testid="stMetricValue"] {
-    color: #5EEAD4 !important;
+    color: #6b55d9 !important;
 }
 
 div[data-testid="stExpander"] {
-    background: #172235;
-    border: 1px solid #334155;
-    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #e6e9ef;
+    border-radius: 12px;
+}
+
+[data-testid="stDataFrame"] {
+    background: #ffffff;
+    border: 1px solid #e6e9ef;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+[data-testid="stAlert"] {
+    border-radius: 12px;
+}
+
+[data-testid="stCaptionContainer"] {
+    color: #7a8495;
 }
 
 hr {
-    border-color: #334155;
+    border-color: #e3e6ed;
+    margin: 2rem 0;
+}
+
+@media (max-width: 700px) {
+    .block-container {
+        padding: 1.25rem 1rem 2.5rem;
+    }
+
+    .hero {
+        padding: 28px 24px;
+        border-radius: 18px;
+    }
+
+    .hero:after {
+        opacity: 0.55;
+        right: -140px;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -180,10 +268,11 @@ for key, value in defaults.items():
 
 st.markdown("""
 <div class="hero">
-    <h1>🎭 Prompt Studio</h1>
-    <p>EXPERIMENT 06 · ROLE-BASED & NEGATIVE PROMPTING</p>
-    <p style="margin-top:12px;">
-        Explore how roles and restrictions influence AI-generated answers.
+    <div class="eyebrow">· PROMPT DESIGN</div>
+    <h1>Prompt Lab</h1>
+    <p>
+        See how a role and clear boundaries shape an AI response.
+        Run three prompt styles side by side and compare the results.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -439,5 +528,4 @@ if results:
         "and style. Negative instructions tell the model what to avoid. "
         "The actual effect depends on the question and the model."
     )
-
 

@@ -21,56 +21,117 @@ st.set_page_config(
 st.markdown("""
 <style>
 .stApp {
-    background: linear-gradient(135deg, #10172A, #182746, #281B4D);
-    color: #FFFFFF;
+    background:
+        radial-gradient(ellipse at 12% 0%, rgba(84, 104, 255, 0.18), transparent 34%),
+        radial-gradient(ellipse at 92% 10%, rgba(17, 166, 181, 0.12), transparent 30%),
+        #0b1220;
+    color: #e8eef8;
+}
+[data-testid="stHeader"] {
+    background: transparent;
+}
+[data-testid="stToolbar"] {
+    right: 1.5rem;
 }
 .block-container {
-    max-width: 1550px;
-    padding-top: 1.5rem;
-    padding-bottom: 3rem;
+    max-width: 1440px;
+    padding: 2rem 2rem 4rem;
 }
-h1, h2, h3, h4, p, label {
-    color: #FFFFFF !important;
+h1, h2, h3, h4, p, label, [data-testid="stMarkdownContainer"] {
+    color: #e8eef8;
+}
+h1 {
+    letter-spacing: -0.035em;
+}
+h2 {
+    margin-top: 1.25rem !important;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    letter-spacing: -0.02em;
 }
 [data-testid="stCaptionContainer"] {
-    color: #CBD5E8 !important;
+    color: #9eacc2 !important;
 }
-div[data-testid="stTextArea"] textarea {
-    background-color: #FFFFFF !important;
-    color: #17213B !important;
-    -webkit-text-fill-color: #17213B !important;
-    border: 2px solid #A8B8E8 !important;
-    border-radius: 10px !important;
-    font-size: 15px !important;
-    opacity: 1 !important;
-}
-div[data-testid="stTextArea"] label {
-    color: #FFFFFF !important;
-}
-div.stButton > button {
-    background: linear-gradient(90deg, #7657FF, #16B9C8) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 12px !important;
-    min-height: 52px;
-    font-weight: bold;
-    font-size: 16px;
-}
-div.stButton > button:hover {
-    filter: brightness(1.12);
+[data-testid="stMarkdownContainer"] small {
+    color: rgba(255, 255, 255, 0.78);
+    letter-spacing: 0.1em;
 }
 .prompt-header {
-    color: white;
-    padding: 15px;
-    min-height: 100px;
-    border-radius: 12px 12px 0 0;
+    color: #fff;
+    padding: 17px 18px;
+    min-height: 88px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 0;
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
 }
-.purple { background: linear-gradient(120deg, #7657FF, #4934A5); }
-.teal { background: linear-gradient(120deg, #11A6B5, #08717D); }
-.orange { background: linear-gradient(120deg, #FF9B54, #C04D20); }
-[data-testid="stDataFrame"] {
-    background: white;
+.purple {
+    background: linear-gradient(120deg, #7158f5, #4939a7);
+}
+.teal {
+    background: linear-gradient(120deg, #1197a5, #11636f);
+}
+.orange {
+    background: linear-gradient(120deg, #e98645, #a9432e);
+}
+div[data-testid="stTextArea"] textarea {
+    background-color: #111b2b !important;
+    color: #e8eef8 !important;
+    -webkit-text-fill-color: #e8eef8 !important;
+    border: 1px solid #29374d !important;
+    border-radius: 0 0 14px 14px !important;
+    font-size: 15px !important;
+    opacity: 1 !important;
+    line-height: 1.65 !important;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+div[data-testid="stTextArea"] textarea:focus {
+    border-color: #7d78ff !important;
+    box-shadow: 0 0 0 3px rgba(125, 120, 255, 0.16) !important;
+}
+div[data-testid="stTextArea"] label {
+    color: #e8eef8 !important;
+}
+div[data-testid="stTextArea"] textarea::placeholder {
+    color: #7f8da3 !important;
+    -webkit-text-fill-color: #7f8da3 !important;
+}
+div.stButton > button {
+    background: linear-gradient(100deg, #7058f5, #168fba) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: 12px !important;
+    min-height: 54px;
+    font-weight: 650;
+    font-size: 15px;
+    letter-spacing: 0.025em;
+    box-shadow: 0 10px 24px rgba(75, 79, 205, 0.24);
+    transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
+}
+div.stButton > button:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(75, 79, 205, 0.32);
+}
+[data-testid="stAlert"] {
     border-radius: 12px;
+}
+[data-testid="stDataFrame"] {
+    overflow: hidden;
+    border: 1px solid #26344a;
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+}
+[data-testid="stProgressBar"] > div > div {
+    background: linear-gradient(90deg, #7657ff, #16b9c8);
+}
+hr {
+    border-color: rgba(148, 163, 184, 0.18) !important;
+}
+@media (max-width: 768px) {
+    .block-container {
+        padding: 1.25rem 1rem 2.5rem;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -106,12 +167,18 @@ for key, value in defaults.items():
 # ---------------- MAIN HEADING ----------------
 
 st.markdown("""
-<div style="text-align:center; padding:20px 0 25px;">
-    <h1 style="font-size:34px; color:white;">
-        EXPERIMENT 3 · ITERATIVE PROMPT REFINEMENT
+<div style="text-align:center; padding:28px 0 24px;">
+    <div style="display:inline-block; margin-bottom:12px; padding:6px 12px;
+        border:1px solid rgba(148,163,184,.25); border-radius:999px;
+        background:rgba(17,27,43,.72); color:#aebcff; font-size:11px;
+        font-weight:700; letter-spacing:.14em;">
+        GENERATIVE AI LABORATORY
+    </div>
+    <h1 style="font-size:clamp(25px, 4vw, 38px); color:#f4f7ff; margin:0;">
+        · ITERATIVE PROMPT REFINEMENT
     </h1>
-    <p style="color:#CBD5E8;">
-        Generative AI Laboratory · Progressive Prompt Improvement
+    <p style="color:#9eacc2; margin-top:12px;">
+        See how clearer instructions shape AI responses, round by round.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -429,4 +496,3 @@ else:
 # ---------------- FOOTER ----------------
 
 st.markdown("---")
-
